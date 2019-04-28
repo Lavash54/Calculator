@@ -4,8 +4,8 @@ import os, os
 
 @cherrypy.expose
 class HelloWorld(object):
-    @cherrypy.expose
-    def index(self):
+    @cherrypy.tools.accept(media='text/plain')
+    def GET(self):
         return open(file='index.html', encoding='utf8')
 
 @cherrypy.expose
