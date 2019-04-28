@@ -18,7 +18,12 @@ function createBlocks() {
 }
 
 
+function calculate(a, b, symb) {
+ $.get("/g").done(function(result){
+    console.log(result);
+    });
 
+}
 
 
 function unicode(i) {
