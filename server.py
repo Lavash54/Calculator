@@ -2,6 +2,7 @@ import cherrypy
 from cherrypy.lib import static
 import os, os
 
+@cherrypy.expose
 class HelloWorld(object):
     @cherrypy.expose
     def index(self):
@@ -30,7 +31,7 @@ conf = {
         # },
         '/static': {
             'tools.staticdir.on': True,
-            'tools.staticdir.dir': './puplic'
+            'tools.staticdir.dir': './public'
         }
     }
 
