@@ -5,7 +5,7 @@ import os, os
 class HelloWorld(object):
     @cherrypy.expose
     def index(self):
-        return open('index.html')
+        return open(file='index.html', encoding='utf8')
 
 @cherrypy.expose
 class Heyo(object):
