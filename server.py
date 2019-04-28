@@ -44,7 +44,7 @@ cherrypy.config.update({'server.socket_host': '127.0.0.1',
                             'log.error_file': './error.log',
                             })
 
-cherrypy.tree.mount(HelloWorld(), '/')
+cherrypy.tree.mount(HelloWorld(), '/', conf)
 cherrypy.tree.mount(Heyo(), '/g', conf)
 
 cherrypy.engine.start()
