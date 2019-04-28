@@ -1,4 +1,3 @@
-import requests
 import cherrypy
 from cherrypy.lib import static
 import os, os
