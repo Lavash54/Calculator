@@ -4,3 +4,76 @@ html, body {
   margin: 0px;
   padding: 0px;
 }
+
+.container {
+  width: 700px;
+  height: 400px;
+  margin: 200px auto;
+  border-radius: 10px;
+  border: 1px solid lightgray;
+}
+
+.container input {
+  display: block;
+  width: 90%;
+  height: 50px;
+  margin: 30px auto;
+  font-size: 18px;
+  text-align: right;
+  color: #595959;
+  padding-right: 10px;
+  outline: none;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0 0 1px 1px lightgray;
+  transition: 0.5s all;
+}
+
+.container input:focus {
+  box-shadow: 0 0 2px 2px #A3B5FF;
+}
+
+.container .panel {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.container .panel .block,
+.container .panel .numbers,
+.container .panel .equally {
+  width: 80px;
+  height: 45px;
+  margin-right: 11px;
+  margin-bottom: 8px;
+  background-color: #DCE0EA;
+  font-size: 18px;
+  color: #595959;
+  user-select: none;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  box-shadow: 0 1px 1px 1px #EFF3FF;
+}
+
+.container .panel .numbers {
+  background-color: #EFF4FF;
+}
+
+.container .panel .equally {
+  background-color: #5995ED;
+  color: white;
+}
+
+.container .panel .block:hover,
+.container .panel .numbers:hover,
+.container .panel .equally:hover {
+  cursor: pointer;
+}
+
+.container .panel .block:nth-child(7n) {
+  margin-right: 0px;
+}
+
+sup {
+  font-size: 10px;
+}
