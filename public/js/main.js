@@ -1,4 +1,4 @@
-var divBlocks = '<button class="block" id="$sing">$content</button>';
+var divBlocks = '<button class="block" id="$sing" onclick="sanya(this.id)">$content</button>';
 
 
 function createBlocks() {
@@ -6,6 +6,7 @@ function createBlocks() {
     $('.panel').append(divBlocks
       .replace('$sing', i)
       .replace('$content', unicode(i))
+      .replace('$id', i)
     );
     if ((i > 10 && i < 14) || (i > 17) && (i < 21) || (i > 24) && (i < 28) || (i > 31) && (i < 34)) {
       $('#' + i).removeClass('block');
@@ -22,9 +23,21 @@ function calculate(a, b, symb) {
  $.get("/g").done(function(result){
     console.log(result);
     });
-
 }
-
+// ( - x kor is y   ) - e v step x
+function sanya(identificator) {
+  var text = id(identificator).innerHTML;
+  var firstText = id('input_output').value;
+  if (text === 'AC') {
+    id('input_output').value = "";
+  } else if((text === 'sin') || (text === 'cos') || (text === 'tg') || (text === 'log') || text === 'ln') {
+    id('input_output').value = firstText + text + '(';
+  } else if (text === '=') {
+    alert("LOX");
+  } else {
+    id('input_output').value = firstText + text;
+  }
+}
 
 
 function unicode(i) {
@@ -32,8 +45,8 @@ function unicode(i) {
     case 1: return 'Rad';
     case 2: return 'Deg';
     case 3: return '&#120;&#33;';
-    case 4: return '&#40;';
-    case 5: return '&#41;';
+    case 4: return '<span id="first">y</span>&#8730;<span id="second">x</span>';
+    case 5: return '&#101;<sup>x</sup>';
     case 6: return '&#37;';
     case 7: return 'AC';
     case 8: return 'lnv';
@@ -52,7 +65,7 @@ function unicode(i) {
     case 21: return '&#42;';
     case 22: return '&#101;';
     case 23: return 'tg';
-    case 24: return '&#8730;';
+    case 24: return '<span id="first">2</span>&#8730;';
     case 25: return '&#49;';
     case 26: return '&#50;';
     case 27: return '&#51;';
@@ -66,4 +79,8 @@ function unicode(i) {
     case 35: return '&#45;';
     default: return -1;
   }
+}
+
+function id(id) {
+  return document.getElementById(id);
 }

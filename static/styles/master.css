@@ -74,6 +74,20 @@ html, body {
   margin-right: 0px;
 }
 
+.container .panel .block #first {
+  font-size: 12px;
+  position: relative;
+  top: -8px;
+  left: 5px;
+}
+
+.container .panel .block #second {
+  font-size: 12px;
+  position: relative;
+  top: 0;
+  left: -3px;
+}
+
 sup {
   font-size: 10px;
 }
