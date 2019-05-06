@@ -3,20 +3,60 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
   <link rel="stylesheet" href="static/styles/master.css">
-  <script src="static/js/main.js" charset="utf-8"></script>
   <title>Calculator</title>
 </head>
 
-<body onload="createBlocks()">
-  <div class="container">
-    <input id="input_output" type="text" name="" value="" placeholder="0">
-    <div class="panel"></div>
+<body>
+  <div class="calculator">
+    <section class="screen">
+      <div class="equation">
+        <div class="summary"></div>
+        <div class="total">0</div>
+      </div>
+    </section>
+    <section class="panel">
+      <button data-val="delete">Del</button>
+      <button data-val="null">.</button>
+      <button data-val="factorial">x!</button>
+      <button data-val="(">(</button>
+      <button data-val=")">)</button>
+      <button data-val="%">%</button>
+      <button data-val="clear">AC</button>
+      <button data-val="sin">sin</button>
+      <button data-val="nlog">ln</button>
+      <button data-val="pi">π</button>
+      <button data-val="7">7</button>
+      <button data-val="8">8</button>
+      <button data-val="9">9</button>
+      <button class="operator" data-val="/">÷</button>
+      <button data-val="cos">cos</button>
+      <button data-val="log">log</button>
+      <button data-val="exp">e</button>
+      <button data-val="4">4</button>
+      <button data-val="5">5</button>
+      <button data-val="6">6</button>
+      <button class="operator" data-val="*">×</button>
+      <button data-val="tan">tg</button>
+      <button data-val="sqrt">√</button>
+      <button data-val="pow">x<sup>y</sup></button>
+      <button data-val="1">1</button>
+      <button data-val="2">2</button>
+      <button data-val="3">3</button>
+      <button class="operator" data-val="-">-</button>
+      <button data-val="null">.</button>
+      <button data-val="null">.</button>
+      <button data-val="null">.</button>
+      <button data-val="0">0</button>
+      <button data-val=".">.</button>
+      <button data-val="=">=</button>
+      <button class="operator" data-val="+">+</button>
+    </section>
   </div>
+  <script src="static/js/main.js" charset="utf-8"></script>
 </body>
 
 </html>
