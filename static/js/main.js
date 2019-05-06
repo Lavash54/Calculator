@@ -3,12 +3,19 @@ var $summary = $('.summary');
 var $total = $('.total');
 var decimal = false;
 var operators = ['+', '-', '*', '/'];
+var numbers = '1234567890';
+var countBracket = 0;
 
 $keys.click(function() {
   var keyValue = $(this).data('val');
   output = $summary.html();
   var lastChar = output[output.length - 1];
   console.log(lastChar);
+
+  if (output == 'Infinity') {
+    $summary.html('');
+    $total.html('0');
+  }
 
   if (keyValue == 'clear') {
     $total.html('0');
@@ -52,21 +59,33 @@ $keys.click(function() {
       $summary.html($summary.html() + keyValue);
     }
   } else if (keyValue == 'delete') {
+    // Странно
+  } else if (keyValue == ')') {
+    if (operators.indexOf(lastChar) > -1) {
 
+    } else if (countBracket > 0) {
+      $summary.html($summary.html() + keyValue);
+      countBracket--;
+    }
+  } else if (keyValue == '(') {
+    if (numbers.indexOf(lastChar) == -1) {
+      countBracket++;
+      $summary.html($summary.html() + keyValue);
+    }
   } else if (keyValue == '.') {
-		if (output == '') {
-			$summary.html('0' + keyValue);
-		} else if (operators.indexOf(lastChar) > -1) {
-			$summary.html($summary.html() + '0' + keyValue);
-		} else if (lastChar == '.') {
+    if (output == '') {
+      $summary.html('0' + keyValue);
+    } else if (operators.indexOf(lastChar) > -1) {
+      $summary.html($summary.html() + '0' + keyValue);
+    } else if (lastChar == '.') {
 
     } else {
-			if (!decimal) {
-				$summary.html($summary.html() + keyValue);
-				decimal = true;
-			}
-		}
-	} else {
+      if (!decimal) {
+        $summary.html($summary.html() + keyValue);
+        decimal = true;
+      }
+    }
+  } else {
     $summary.html($summary.html() + keyValue);
   }
 });
