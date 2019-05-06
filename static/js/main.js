@@ -1,6 +1,7 @@
 var $keys = $('button');
 var $summary = $('.summary');
 var $total = $('.total');
+var decimal = false;
 var operators = ['+', '-', '*', '/'];
 
 $keys.click(function() {
@@ -12,6 +13,7 @@ $keys.click(function() {
   if (keyValue == 'clear') {
     $total.html('0');
     $summary.html('');
+    decimal = false;
   } else if (keyValue == '=') {
     if (lastChar == '!') {
       end = factorial($summary.html().substring(0, output.length - 1));
@@ -25,8 +27,11 @@ $keys.click(function() {
     } else {
       $summary.html('');
     }
+    decimal = false;
   } else if ($(this).is('.operator')) {
-    if (output != '' && operators.indexOf(lastChar) == -1) {
+    if (lastChar == '.') {
+
+    } else if (output != '' && operators.indexOf(lastChar) == -1) {
       $summary.html($summary.html() + keyValue);
     } else if (output == '' && keyValue == '-') {
       $summary.html($summary.html() + keyValue);
@@ -34,19 +39,34 @@ $keys.click(function() {
     if (operators.indexOf(lastChar) > -1 && output.length > 1) {
       $summary.html($summary.html().replace(lastChar, keyValue));
     }
+    decimal = false;
   } else if (keyValue == 'factorial') {
     if (lastChar == '!') {
       alert('Данный калькулятор не может вычислять двойной и более факториал');
     } else if (output != '') {
       $summary.html($summary.html() + '!');
     }
+    decimal = false;
   } else if (keyValue == '0') {
     if (output != '0') {
       $summary.html($summary.html() + keyValue);
     }
   } else if (keyValue == 'delete') {
 
-  } else {
+  } else if (keyValue == '.') {
+		if (output == '') {
+			$summary.html('0' + keyValue);
+		} else if (operators.indexOf(lastChar) > -1) {
+			$summary.html($summary.html() + '0' + keyValue);
+		} else if (lastChar == '.') {
+
+    } else {
+			if (!decimal) {
+				$summary.html($summary.html() + keyValue);
+				decimal = true;
+			}
+		}
+	} else {
     $summary.html($summary.html() + keyValue);
   }
 });
