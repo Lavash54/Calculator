@@ -27,13 +27,20 @@ $keys.click(function() {
     $total.html('0');
     $summary.html('');
     decimal = false;
+  } else if (keyValue == 'delete') {
+    del = output.substring(0, output.length - 1);
+    $summary.html(del);
+  } else if (keyValue == '%') { // Немного не то !!!
+    if (numbers.indexOf(lastChar) > -1) {
+      end = calculateString(output);
+      $summary.html(end / 100);
+      $total.html($summary.html());
+    }
   } else if (keyValue == '=') {
     if (lastChar == '!') {
-      end = factorial($summary.html().substring(0, output.length - 1));
+      end = factorial(output.substring(0, output.length - 1));
     } else if (calc.indexOf(trig) > -1 || calc.indexOf(sqrt) > -1 ||
       calc.indexOf(pow) > -1) {
-        console.log(numberSecondPow);
-        console.log(numberFirstPow);
       output = output
         .replace(numberFirstPow + '^' + numberSecondPow, 'Math.pow(' + numberFirstPow + ',' + numberSecondPow + ')')
         .replace(/sqrt/g, 'Math.sqrt')
@@ -81,8 +88,6 @@ $keys.click(function() {
     if (output != '0') {
       $summary.html($summary.html() + keyValue);
     }
-  } else if (keyValue == 'delete') {
-    // Странно
   } else if (keyValue == ')') {
     if (operators.indexOf(lastChar) > -1) {
 
