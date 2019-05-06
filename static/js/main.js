@@ -4,6 +4,7 @@ var $total = $('.total');
 var decimal = false;
 var operators = ['+', '-', '*', '/'];
 var numbers = '1234567890';
+var trigonametry = ['cos', 'sin', 'tan', 'log'];
 var countBracket = 0;
 
 $keys.click(function() {
@@ -17,6 +18,8 @@ $keys.click(function() {
     $total.html('0');
   }
 
+  var trig = 'cos';
+
   if (keyValue == 'clear') {
     $total.html('0');
     $summary.html('');
@@ -24,6 +27,13 @@ $keys.click(function() {
   } else if (keyValue == '=') {
     if (lastChar == '!') {
       end = factorial($summary.html().substring(0, output.length - 1));
+    } else if (trigonametry.indexOf(trig) > -1) {
+      output = output
+        .replace(/cos/g, 'Math.cos')
+        .replace(/sin/g, 'Math.sin')
+        .replace(/log/g, 'Math.log')
+        .replace(/tan/g, 'Math.tan');
+      end = calculateString(output);
     } else {
       end = calculateString($summary.html());
     }
@@ -85,8 +95,16 @@ $keys.click(function() {
         decimal = true;
       }
     }
-  } else {
+  } else if (keyValue == 'cos(' || keyValue == 'sin(' ||
+    keyValue == 'log(' || keyValue == 'tan(') {
+    countBracket++;
     $summary.html($summary.html() + keyValue);
+  } else {
+    if (lastChar == ')') {
+      $summary.html($summary.html() + '*' + keyValue);
+    } else {
+      $summary.html($summary.html() + keyValue);
+    }
   }
 });
 
