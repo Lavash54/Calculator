@@ -147,7 +147,11 @@ function calculateString(str) {
 }
 
 $(window).keydown(function(e) {
+  console.log(e.which);
   switch (e.which) {
+    case 8:
+      key = 'delete';
+      break;
     case 48:
       key = 0;
       break;
