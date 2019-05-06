@@ -4,14 +4,15 @@ var $total = $('.total');
 var decimal = false;
 var operators = ['+', '-', '*', '/'];
 var numbers = '1234567890';
-var trigonametry = ['cos', 'sin', 'tan', 'log'];
+var calc = ['cos', 'sin', 'tan', 'log', 'sqrt', 'pow'];
 var countBracket = 0;
+var numberFirstPow = 0;
+var numberSecondPow = 0;
 
 $keys.click(function() {
   var keyValue = $(this).data('val');
   output = $summary.html();
   var lastChar = output[output.length - 1];
-  console.log(lastChar);
 
   if (output == 'Infinity') {
     $summary.html('');
@@ -19,6 +20,8 @@ $keys.click(function() {
   }
 
   var trig = 'cos';
+  var sqrt = 'sqrt';
+  var pow = 'pow';
 
   if (keyValue == 'clear') {
     $total.html('0');
@@ -27,12 +30,18 @@ $keys.click(function() {
   } else if (keyValue == '=') {
     if (lastChar == '!') {
       end = factorial($summary.html().substring(0, output.length - 1));
-    } else if (trigonametry.indexOf(trig) > -1) {
+    } else if (calc.indexOf(trig) > -1 || calc.indexOf(sqrt) > -1 ||
+      calc.indexOf(pow) > -1) {
+        console.log(numberSecondPow);
+        console.log(numberFirstPow);
       output = output
+        .replace(numberFirstPow + '^' + numberSecondPow, 'Math.pow(' + numberFirstPow + ',' + numberSecondPow + ')')
+        .replace(/sqrt/g, 'Math.sqrt')
         .replace(/cos/g, 'Math.cos')
         .replace(/sin/g, 'Math.sin')
         .replace(/log/g, 'Math.log')
         .replace(/tan/g, 'Math.tan');
+        console.log(output);
       end = calculateString(output);
     } else {
       end = calculateString($summary.html());
@@ -41,13 +50,16 @@ $keys.click(function() {
 
     if (end != 0) {
       $summary.html(end);
+      numberFirstPow = end;
     } else {
       $summary.html('');
     }
     decimal = false;
   } else if ($(this).is('.operator')) {
     if (lastChar == '.') {
-
+      $summary.html($summary.html());
+    } else if (lastChar == '(') {
+      $summary.html($summary.html());
     } else if (output != '' && operators.indexOf(lastChar) == -1) {
       $summary.html($summary.html() + keyValue);
     } else if (output == '' && keyValue == '-') {
@@ -60,6 +72,7 @@ $keys.click(function() {
   } else if (keyValue == 'factorial') {
     if (lastChar == '!') {
       alert('Данный калькулятор не может вычислять двойной и более факториал');
+      return -1;
     } else if (output != '') {
       $summary.html($summary.html() + '!');
     }
@@ -79,9 +92,11 @@ $keys.click(function() {
     }
   } else if (keyValue == '(') {
     if (numbers.indexOf(lastChar) == -1) {
-      countBracket++;
       $summary.html($summary.html() + keyValue);
+    } else {
+      $summary.html($summary.html() + '*' + keyValue);
     }
+    countBracket++;
   } else if (keyValue == '.') {
     if (output == '') {
       $summary.html('0' + keyValue);
@@ -96,12 +111,22 @@ $keys.click(function() {
       }
     }
   } else if (keyValue == 'cos(' || keyValue == 'sin(' ||
-    keyValue == 'log(' || keyValue == 'tan(') {
+    keyValue == 'log(' || keyValue == 'tan(' || keyValue == 'sqrt(') {
+    if (lastChar == ')' || numbers.indexOf(lastChar) > -1) {
+      $summary.html($summary.html() + '*' + keyValue);
+    } else {
+      $summary.html($summary.html() + keyValue);
+    }
     countBracket++;
+  } else if (keyValue == '^') {
+    numberFirstPow = lastChar; // Всего один символ
     $summary.html($summary.html() + keyValue);
   } else {
     if (lastChar == ')') {
       $summary.html($summary.html() + '*' + keyValue);
+    } else if (lastChar == '^') {
+      numberSecondPow = keyValue; // Всего один символ
+      $summary.html($summary.html() + keyValue);
     } else {
       $summary.html($summary.html() + keyValue);
     }
@@ -117,7 +142,6 @@ function calculateString(str) {
 }
 
 $(window).keydown(function(e) {
-  console.log(e.which);
   switch (e.which) {
     case 48:
       key = 0;
