@@ -89,6 +89,15 @@ html, body {
   box-shadow: 0 2px 1px #7D8BC4;
 }
 
+.calculator .panel .number {
+  background-color: #96A9D1;
+  box-shadow: 0 2px 1px #B7CEFF;
+}
+
+.calculator .panel .number:hover {
+  background-color: #B0C5F4;
+}
+
 .calculator .panel button:hover {
   cursor: pointer;
   background-color: #485863;

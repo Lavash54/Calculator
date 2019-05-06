@@ -13,9 +13,18 @@ $keys.click(function() {
     $total.html('0');
     $summary.html('');
   } else if (keyValue == '=') {
-    var end = calculateString($summary.html());
+    if (lastChar == '!') {
+      end = factorial($summary.html().substring(0, output.length - 1));
+    } else {
+      end = calculateString($summary.html());
+    }
     $total.html(end);
-    $summary.html(end);
+
+    if (end != 0) {
+      $summary.html(end);
+    } else {
+      $summary.html('');
+    }
   } else if ($(this).is('.operator')) {
     if (output != '' && operators.indexOf(lastChar) == -1) {
       $summary.html($summary.html() + keyValue);
@@ -25,10 +34,18 @@ $keys.click(function() {
     if (operators.indexOf(lastChar) > -1 && output.length > 1) {
       $summary.html($summary.html().replace(lastChar, keyValue));
     }
+  } else if (keyValue == 'factorial') {
+    if (output != '') {
+      $summary.html($summary.html() + '!');
+    }
   } else {
     $summary.html($summary.html() + keyValue);
   }
 });
+
+function factorial(n) {
+  return n ? n * factorial(n - 1) : 1;
+}
 
 function calculateString(str) {
   return (new Function('return ' + str))();
