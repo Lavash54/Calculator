@@ -28,6 +28,11 @@ $keys.click(function() {
     $summary.html('');
     decimal = false;
   } else if (keyValue == 'delete') {
+    if (lastChar == ')') {
+      countBracket++;
+    } else if (lastChar == '(') {
+      countBracket--;
+    }
     del = output.substring(0, output.length - 1);
     $summary.html(del);
   } else if (keyValue == '%') { // Немного не то !!!
@@ -48,7 +53,6 @@ $keys.click(function() {
         .replace(/sin/g, 'Math.sin')
         .replace(/log/g, 'Math.log')
         .replace(/tan/g, 'Math.tan');
-        console.log(output);
       end = calculateString(output);
     } else {
       end = calculateString($summary.html());
@@ -132,6 +136,8 @@ $keys.click(function() {
     } else if (lastChar == '^') {
       numberSecondPow = keyValue; // Всего один символ
       $summary.html($summary.html() + keyValue);
+    } else if (lastChar == '0') {
+      $summary.html(keyValue);
     } else {
       $summary.html($summary.html() + keyValue);
     }
@@ -198,9 +204,6 @@ $(window).keydown(function(e) {
     case 187:
       key = '+';
       break;
-    case 67:
-      key = 'clear';
-      break;
 
     case 96:
       key = 0;
@@ -253,6 +256,18 @@ $(window).keydown(function(e) {
       break;
     case 27:
       key = 'clear';
+      break;
+    case 67:
+      key = 'cos(';
+      break;
+    case 83:
+      key = 'sin(';
+      break;
+    case 84:
+      key = 'tan(';
+      break;
+    case 76:
+      key = 'log(';
       break;
     default:
       return false;
