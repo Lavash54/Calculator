@@ -35,10 +35,24 @@ $keys.click(function() {
     }
     del = output.substring(0, output.length - 1);
     $summary.html(del);
-  } else if (keyValue == '%') { // Немного не то !!!
+  } else if (keyValue == '%') {
+    output = outputTrig(output);
+    var string = '';
+    var variable;
     if (numbers.indexOf(lastChar) > -1) {
-      end = calculateString(output);
-      $summary.html(end / 100);
+      for (var i = output.length - 1; i >= 0; i--) {
+        if (operators.indexOf(output[i]) <= -1) {
+          string += output[i];
+          variable = i;
+        } else {
+          break;
+        }
+      }
+      string = reverseString(string);
+      console.log(string);
+      end = calculateString(string) / 100;
+      start = calculateString(output.substring(0, variable) + '' + end);
+      $summary.html(start);
       $total.html($summary.html());
     }
   } else if (keyValue == '=') {
@@ -46,13 +60,7 @@ $keys.click(function() {
       end = factorial(output.substring(0, output.length - 1));
     } else if (calc.indexOf(trig) > -1 || calc.indexOf(sqrt) > -1 ||
       calc.indexOf(pow) > -1) {
-      output = output
-        .replace(numberFirstPow + '^' + numberSecondPow, 'Math.pow(' + numberFirstPow + ',' + numberSecondPow + ')')
-        .replace(/sqrt/g, 'Math.sqrt')
-        .replace(/cos/g, 'Math.cos')
-        .replace(/sin/g, 'Math.sin')
-        .replace(/log/g, 'Math.log')
-        .replace(/tan/g, 'Math.tan');
+      output = outputTrig(output);
       end = calculateString(output);
     } else {
       end = calculateString($summary.html());
@@ -128,16 +136,20 @@ $keys.click(function() {
     }
     countBracket++;
   } else if (keyValue == '^') {
-    numberFirstPow = lastChar; // Всего один символ
+    numberFirstPow = lastChar; // Сделть по принципу %
     $summary.html($summary.html() + keyValue);
   } else {
     if (lastChar == ')') {
       $summary.html($summary.html() + '*' + keyValue);
     } else if (lastChar == '^') {
-      numberSecondPow = keyValue; // Всего один символ
+      numberSecondPow = keyValue; // Сделть по принципу %
       $summary.html($summary.html() + keyValue);
     } else if (lastChar == '0') {
-      $summary.html(keyValue);
+      if (output[output.length - 2] == '(') {
+        $summary.html($summary.html().replace(lastChar, keyValue));
+      } else {
+        $summary.html($summary.html() + keyValue);
+      }
     } else {
       $summary.html($summary.html() + keyValue);
     }
@@ -148,8 +160,30 @@ function factorial(n) {
   return n ? n * factorial(n - 1) : 1;
 }
 
+function reverseString(str) {
+  var newString = '';
+
+  for (var i = str.length - 1; i >= 0; i--) {
+    newString += str[i];
+  }
+
+  return newString;
+}
+
 function calculateString(str) {
   return (new Function('return ' + str))();
+}
+
+function outputTrig(output) {
+  output = output
+    .replace(numberFirstPow + '^' + numberSecondPow, 'Math.pow(' + numberFirstPow + ',' + numberSecondPow + ')')
+    .replace(/sqrt/g, 'Math.sqrt')
+    .replace(/cos/g, 'Math.cos')
+    .replace(/sin/g, 'Math.sin')
+    .replace(/log/g, 'Math.log')
+    .replace(/tan/g, 'Math.tan');
+
+  return output;
 }
 
 $(window).keydown(function(e) {
