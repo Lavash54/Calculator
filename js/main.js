@@ -40,7 +40,7 @@ $keys.click(function() {
     var string = '';
     var variable;
     if (numbers.indexOf(lastChar) > -1) {
-      for (var i = output.length - 1; i >= 0; i--) {
+      for (var i = output.length - 1; i >= 0; i--) { // Получения числа до %
         if (operators.indexOf(output[i]) <= -1) {
           string += output[i];
           variable = i;
@@ -48,7 +48,7 @@ $keys.click(function() {
           break;
         }
       }
-      string = reverseString(string);
+      string = reverseString(string); // Переворачиваем строку
       console.log(string);
       end = calculateString(string) / 100;
       start = calculateString(output.substring(0, variable) + '' + end);
@@ -56,13 +56,23 @@ $keys.click(function() {
       $total.html($summary.html());
     }
   } else if (keyValue == '=') {
-    if (lastChar == '!') {
+    for (var i = 0; i < output.length; i++) { // Получение степени числа
+      if (output.indexOf('^') > -1 && operators.indexOf(output[i]) <= -1) {
+        numberSecondPow += output[i];
+        if (output[i] == '^') {
+          numberSecondPow = '';
+        }
+      } else {
+        break;
+      }
+    }
+    if (lastChar == '!') { // Факториал
       end = factorial(output.substring(0, output.length - 1));
     } else if (calc.indexOf(trig) > -1 || calc.indexOf(sqrt) > -1 ||
-      calc.indexOf(pow) > -1) {
+      calc.indexOf(pow) > -1) { // Квадрат, корень, тригонометрия
       output = outputTrig(output);
       end = calculateString(output);
-    } else {
+    } else { // Числа
       end = calculateString($summary.html());
     }
     $total.html(end);
@@ -74,7 +84,7 @@ $keys.click(function() {
       $summary.html('');
     }
     decimal = false;
-  } else if ($(this).is('.operator')) {
+  } else if ($(this).is('.operator')) { // Операторы
     if (lastChar == '.') {
       $summary.html($summary.html());
     } else if (lastChar == '(') {
@@ -102,7 +112,6 @@ $keys.click(function() {
     }
   } else if (keyValue == ')') {
     if (operators.indexOf(lastChar) > -1) {
-
     } else if (countBracket > 0) {
       $summary.html($summary.html() + keyValue);
       countBracket--;
@@ -115,35 +124,45 @@ $keys.click(function() {
     }
     countBracket++;
   } else if (keyValue == '.') {
-    if (output == '') {
+    if (output == '') { // Если ничего, ставим ноль перед точкой
       $summary.html('0' + keyValue);
-    } else if (operators.indexOf(lastChar) > -1) {
+    } else if (operators.indexOf(lastChar) > -1) { // Если последний символ Оператор, ставим ноль перед точкой
       $summary.html($summary.html() + '0' + keyValue);
     } else if (lastChar == '.') {
 
     } else {
-      if (!decimal) {
+      if (!decimal) { // Не даем пользователю выставить к примеру такое число - "0.00111.11"
         $summary.html($summary.html() + keyValue);
         decimal = true;
       }
     }
   } else if (keyValue == 'cos(' || keyValue == 'sin(' ||
     keyValue == 'log(' || keyValue == 'tan(' || keyValue == 'sqrt(') {
-    if (lastChar == ')' || numbers.indexOf(lastChar) > -1) {
+    if (lastChar == ')' || numbers.indexOf(lastChar) > -1) { // Если перед ними стоит закрывающая стобка или цифра - ставить знак умножения
       $summary.html($summary.html() + '*' + keyValue);
     } else {
       $summary.html($summary.html() + keyValue);
     }
     countBracket++;
   } else if (keyValue == '^') {
-    numberFirstPow = lastChar; // Сделть по принципу %
-    $summary.html($summary.html() + keyValue);
+    if (numbers.indexOf(lastChar) > -1) { // Получения числа, которое нужно возвести в квадрат
+      output = outputTrig(output);
+      var string = '';
+      var variable;
+      for (var i = output.length - 1; i >= 0; i--) {
+        if (operators.indexOf(output[i]) <= -1) {
+          string += output[i];
+          variable = i;
+        } else {
+          break;
+        }
+      }
+      numberFirstPow = reverseString(string);
+      $summary.html($summary.html() + keyValue);
+    }
   } else {
     if (lastChar == ')') {
       $summary.html($summary.html() + '*' + keyValue);
-    } else if (lastChar == '^') {
-      numberSecondPow = keyValue; // Сделть по принципу %
-      $summary.html($summary.html() + keyValue);
     } else if (lastChar == '0') {
       if (output[output.length - 2] == '(') {
         $summary.html($summary.html().replace(lastChar, keyValue));
@@ -162,11 +181,9 @@ function factorial(n) {
 
 function reverseString(str) {
   var newString = '';
-
   for (var i = str.length - 1; i >= 0; i--) {
     newString += str[i];
   }
-
   return newString;
 }
 
