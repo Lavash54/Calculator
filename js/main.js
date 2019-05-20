@@ -27,6 +27,7 @@ $keys.click(function() {
     $total.html('0');
     $summary.html('');
     decimal = false;
+    countBracket = 0;
   } else if (keyValue == 'delete') {
     if (lastChar == ')') {
       countBracket++;
@@ -54,7 +55,12 @@ $keys.click(function() {
       start = calculateString(output.substring(0, variable) + '' + end);
       $summary.html(start);
       $total.html($summary.html());
+    } else {
+      full = calculateString(output) / 100;
+      $summary.html(full);
+      $total.html($summary.html());
     }
+    decimal = false;
   } else if (keyValue == '=') {
     for (var i = 0; i < output.length; i++) { // Получение степени числа
       if (output.indexOf('^') > -1 && operators.indexOf(output[i]) <= -1) {
@@ -128,7 +134,7 @@ $keys.click(function() {
       $summary.html('0' + keyValue);
     } else if (operators.indexOf(lastChar) > -1) { // Если последний символ Оператор, ставим ноль перед точкой
       $summary.html($summary.html() + '0' + keyValue);
-    } else if (lastChar == '.') {
+    } else if (lastChar == '.' || lastChar == '(' || lastChar == ')') {
 
     } else {
       if (!decimal) { // Не даем пользователю выставить к примеру такое число - "0.00111.11"
@@ -136,6 +142,15 @@ $keys.click(function() {
         decimal = true;
       }
     }
+  } else if (keyValue == 'e' || keyValue == 'π') {
+    if (lastChar == 'e' || lastChar == 'π') {
+      $summary.html($summary.html() + '*' + keyValue);
+    } else if (numbers.indexOf(lastChar) == -1) {
+      $summary.html($summary.html() + keyValue);
+    } else {
+      $summary.html($summary.html() + '*' + keyValue);
+    }
+
   } else if (keyValue == 'cos(' || keyValue == 'sin(' ||
     keyValue == 'log(' || keyValue == 'tan(' || keyValue == 'sqrt(') {
     if (lastChar == ')' || numbers.indexOf(lastChar) > -1) { // Если перед ними стоит закрывающая стобка или цифра - ставить знак умножения
@@ -169,6 +184,8 @@ $keys.click(function() {
       } else {
         $summary.html($summary.html() + keyValue);
       }
+    } else if (lastChar == 'e' || lastChar == 'π') {
+      $summary.html($summary.html() + '*' + keyValue);
     } else {
       $summary.html($summary.html() + keyValue);
     }
@@ -198,7 +215,9 @@ function outputTrig(output) {
     .replace(/cos/g, 'Math.cos')
     .replace(/sin/g, 'Math.sin')
     .replace(/log/g, 'Math.log')
-    .replace(/tan/g, 'Math.tan');
+    .replace(/tan/g, 'Math.tan')
+    .replace(/π/g, 'Math.PI')
+    .replace(/e/g, 'Math.E');
 
   return output;
 }
