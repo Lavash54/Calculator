@@ -1,6 +1,9 @@
 import cherrypy
+import tg as tg
 from cherrypy.lib import static
 import os, os
+
+from math import log, sin, cos, sqrt, tan, factorial, log1p
 
 
 @cherrypy.expose
@@ -16,6 +19,30 @@ class Heyo(object):
     def GET(self, a, b, ch):
         if ch == '+':
             return a + b
+        if ch == '-':
+            return a - b
+        if ch == '*':
+            return a * b
+        if ch == '/':
+            return a / b
+        if ch == '^':
+            return a ** b
+        if ch == '%':
+            return a % b
+        if ch == 'log':
+            return log(a, b)
+        if ch == 'sin':
+            return sin(a)
+        if ch == 'cos':
+            return cos(a)
+        if ch == 'sqrt':
+            return sqrt(a)
+        if ch == 'tan':
+            return tan(a)
+        if ch == 'ln':
+            return log1p(a)
+        if ch == '!':
+            return factorial(a)
         return "Wrong Command"
 
 
