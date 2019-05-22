@@ -18,29 +18,29 @@ class Heyo(object):
     @cherrypy.tools.accept(media='text/plain')
     def GET(self, a, b, ch):
         if ch == '+':
-            return a + b
+            return str(a + b)
         if ch == '-':
-            return a - b
+            return str(a - b)
         if ch == '*':
-            return a * b
+            return str(a * b)
         if ch == '/':
-            return a / b
+            return str(a / b)
         if ch == '^':
-            return a ** b
+            return str(a ** b)
         if ch == '%':
-            return a % b
+            return str(a % b)
         if ch == 'log':
-            return log(a, b)
+            return str(log(a, b))
         if ch == 'sin':
-            return sin(a)
+            return str(sin(a))
         if ch == 'cos':
-            return cos(a)
+            return str(cos(a))
         if ch == 'sqrt':
-            return sqrt(a)
+            return str(sqrt(a))
         if ch == 'tan':
-            return tan(a)
+            return str(tan(a))
         if ch == 'ln':
-            return log1p(a)
+            return str(log1p(a))
         if ch == '!':
             return factorial(a)
         return "Wrong Command"
