@@ -42,7 +42,7 @@ class Heyo(object):
         if ch == 'ln':
             return str(log1p(a))
         if ch == '!':
-            return factorial(a)
+            return str(factorial(a))
         return "Wrong Command"
 
 
