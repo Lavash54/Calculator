@@ -1,0 +1,116 @@
+* {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+*:focus {
+  outline: none !important;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  background-color: rgb(34, 42, 47);
+  font-family: 'Poppins', sans-serif;
+}
+
+.calculator {
+  width: 600px;
+  height: 380px;
+  margin: 200px auto;
+  border-radius: 10px;
+  border: 1px solid #595959;
+  background-color: rgb(41, 50, 56);
+}
+
+.calculator .screen {
+  width: 100%;
+  border-bottom: 1px solid #595959;
+}
+
+.calculator .equation {
+  width: 100%;
+  padding: 6px;
+  border-radius: 12px 12px 0 0;
+  overflow: hidden;
+}
+
+.calculator .equation .summary, .calculator .equation .total {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.calculator .summary {
+  padding: 6px 6px 0;
+  height: 22px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #b3b3b3;
+}
+
+.calculator .equation .total {
+  display: flex;
+  justify-content: flex-end;
+  padding: 3px 6px 6px;
+  font-size: 32px;
+  color: lightgray;
+  margin: 0 10px;
+}
+
+.calculator .panel {
+  width: 90%;
+  margin: 20px auto;
+}
+
+.calculator .panel button {
+  width: 73px;
+  height: 45px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  margin-bottom: 5px;
+  color: white;
+  font-size: 16px;
+  font-weight: lighter;
+  background-color: #3B4851;
+  transition: 0.5s all;
+  box-shadow: 0 2px 1px #616C72;
+}
+
+.calculator .panel .operator {
+  background-color: #5B6AA5;
+  box-shadow: 0 2px 1px #7D8BC4;
+}
+
+.calculator .panel .number {
+  background-color: #96A9D1;
+  box-shadow: 0 2px 1px #B7CEFF;
+}
+
+.calculator .panel .number:hover {
+  background-color: #B0C5F4;
+}
+
+.calculator .panel button:hover {
+  cursor: pointer;
+  background-color: #485863;
+}
+
+.calculator .panel .operator:hover {
+  background-color: #7385D1;
+}
+
+.calculator .panel button:focus {
+  box-shadow: none;
+}
+
+.calculator .panel button:nth-child(7n) {
+  margin-right: 0;
+}
