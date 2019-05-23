@@ -8,6 +8,7 @@ var calc = ['cos', 'sin', 'tan', 'log', 'sqrt', 'pow'];
 var countBracket = 0; // Подсчет скобок
 var numberFirstPow = '';
 var numberSecondPow = '';
+var numberFactorial = '';
 
 // Fix: "7! * 5"
 
@@ -77,12 +78,24 @@ $keys.click(function() {
       numberSecondPow = reverseString(numberSecondPow); // Переворачиваем строку
     }
     if (output.indexOf('!') > -1) { // Если в строке есть знак факториала
-      for (var i = output.length - 1; i > 0; i--) {
-        output[i];
+      numberFactorial = '';
+      var l = 0;
+      for (var i = output.length - 1; i >= 0; i--) {
+        if (l >= 1) {
+          if (operators.indexOf(output[i]) > -1) {
+            l--;
+            break;
+          } else {
+            numberFactorial += output[i];
+          }
+        }
+        if (output[i] == '!') {
+          l++;
+        }
       }
     }
 
-    output = outputTrig(output); // Квадрат, корень, тригонометрия
+    output = outputTrig(output); // Квадрат, корень, тригонометрия, факториал
     end = calculateString(output);
     $total.html(end);
 
@@ -127,9 +140,7 @@ $keys.click(function() {
       $summary.html($summary.html() + keyValue);
     }
   } else if (keyValue == ')') {
-    if (operators.indexOf(lastChar) > -1) {
-    } else if (lastChar == '(') {
-    } else if (countBracket > 0) {
+    if (operators.indexOf(lastChar) > -1) {} else if (lastChar == '(') {} else if (countBracket > 0) {
       $summary.html($summary.html() + keyValue);
       countBracket--;
     }
@@ -160,7 +171,7 @@ $keys.click(function() {
   } else if (keyValue == 'e' || keyValue == 'π') {
     if (lastChar == '.') {
       $summary.html($summary.html());
-    } else if (lastChar == 'e' || lastChar == 'π') {
+    } else if (lastChar == 'e' || lastChar == 'π' || lastChar == '!') {
       $summary.html($summary.html() + '*' + keyValue);
     } else if (numbers.indexOf(lastChar) == -1) {
       $summary.html($summary.html() + keyValue);
@@ -170,9 +181,9 @@ $keys.click(function() {
 
   } else if (keyValue == 'cos(' || keyValue == 'sin(' ||
     keyValue == 'log(' || keyValue == 'tan(' || keyValue == 'sqrt(') {
-      if (lastChar == '.') {
-        $summary.html($summary.html());
-      } else if (lastChar == ')' || numbers.indexOf(lastChar) > -1) { // Если перед ними стоит закрывающая стобка или цифра - ставить знак умножения
+    if (lastChar == '.') {
+      $summary.html($summary.html());
+    } else if (lastChar == ')' || lastChar == '!' || numbers.indexOf(lastChar) > -1) { // Если перед ними стоит закрывающая стобка или цифра - ставить знак умножения
       $summary.html($summary.html() + '*' + keyValue);
     } else {
       $summary.html($summary.html() + keyValue);
@@ -195,7 +206,7 @@ $keys.click(function() {
       $summary.html($summary.html() + keyValue);
     }
   } else {
-    if (lastChar == ')') {
+    if (lastChar == ')' || lastChar == '!') {
       $summary.html($summary.html() + '*' + keyValue);
     } else if (lastChar == '0') {
       if (output[output.length - 2] == '(') {
@@ -230,6 +241,7 @@ function calculateString(str) {
 function outputTrig(output) {
   output = output
     .replace(numberFirstPow + '^' + numberSecondPow, 'Math.pow(' + numberFirstPow + ',' + numberSecondPow + ')')
+    .replace(numberFactorial + '!', 'factorial(' + numberFactorial + ')')
     .replace(/sqrt/g, 'Math.sqrt')
     .replace(/cos/g, 'Math.cos')
     .replace(/sin/g, 'Math.sin')
@@ -242,7 +254,6 @@ function outputTrig(output) {
 }
 
 $(window).keydown(function(e) {
-  console.log(e.which);
   switch (e.which) {
     case 8:
       key = 'delete';
