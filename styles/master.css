@@ -22,8 +22,7 @@ html, body {
 }
 
 .calculator {
-  width: 600px;
-  height: 380px;
+  width: 426px;
   margin: 200px auto;
   border-radius: 10px;
   border: 1px solid #595959;
@@ -43,7 +42,11 @@ html, body {
 }
 
 .calculator .equation .summary, .calculator .equation .total {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
   justify-content: flex-end;
 }
 
@@ -56,7 +59,11 @@ html, body {
 }
 
 .calculator .equation .total {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
   justify-content: flex-end;
   padding: 3px 6px 6px;
   font-size: 32px;
@@ -80,17 +87,32 @@ html, body {
   font-size: 16px;
   font-weight: lighter;
   background-color: #3B4851;
+  -webkit-transition: 0.5s all;
+  -o-transition: 0.5s all;
   transition: 0.5s all;
+  -webkit-box-shadow: 0 2px 1px #616C72;
   box-shadow: 0 2px 1px #616C72;
 }
 
 .calculator .panel .operator {
   background-color: #5B6AA5;
+  -webkit-box-shadow: 0 2px 1px #7D8BC4;
   box-shadow: 0 2px 1px #7D8BC4;
+}
+
+.calculator .panel .clear {
+  background-color: #FF4444;
+  -webkit-box-shadow: 0 2px 1px #FF7777;
+  box-shadow: 0 2px 1px #FF7777;
+}
+
+.calculator .panel .clear:hover {
+  background-color: #FF5656;
 }
 
 .calculator .panel .number {
   background-color: #96A9D1;
+  -webkit-box-shadow: 0 2px 1px #B7CEFF;
   box-shadow: 0 2px 1px #B7CEFF;
 }
 
@@ -108,6 +130,7 @@ html, body {
 }
 
 .calculator .panel button:focus {
+  -webkit-box-shadow: none;
   box-shadow: none;
 }
 

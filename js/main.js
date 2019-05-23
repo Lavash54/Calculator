@@ -5,7 +5,7 @@ var decimal = false;
 var operators = ['+', '-', '*', '/'];
 var numbers = '1234567890';
 var calc = ['cos', 'sin', 'tan', 'log', 'sqrt', 'pow'];
-var countBracket = 0;
+var countBracket = 0; // Подсчет скобок
 var numberFirstPow = '';
 var numberSecondPow = '';
 
@@ -75,7 +75,8 @@ $keys.click(function() {
         }
       }
       numberSecondPow = reverseString(numberSecondPow); // Переворачиваем строку
-    } else if (output.indexOf('!') > -1) { // Если в строке есть знак факториала
+    }
+    if (output.indexOf('!') > -1) { // Если в строке есть знак факториала
       for (var i = output.length - 1; i > 0; i--) {
         output[i];
       }
@@ -144,7 +145,9 @@ $keys.click(function() {
   } else if (keyValue == '.') {
     if (output == '') { // Если ничего, ставим ноль перед точкой
       $summary.html('0' + keyValue);
+      decimal = true;
     } else if (operators.indexOf(lastChar) > -1) { // Если последний символ Оператор, ставим ноль перед точкой
+      decimal = true;
       $summary.html($summary.html() + '0' + keyValue);
     } else if (lastChar == '.' || lastChar == '(' || lastChar == ')') {
 
