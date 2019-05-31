@@ -40,28 +40,7 @@ $keys.click(function() {
     del = output.substring(0, output.length - 1);
     $summary.html(del);
   } else if (keyValue == '%') {
-    output = outputTrig(output);
-    var string = '';
-    var variable;
-    if (numbers.indexOf(lastChar) > -1) {
-      for (var i = output.length - 1; i >= 0; i--) { // Получения числа до %
-        if (operators.indexOf(output[i]) <= -1) {
-          string += output[i];
-          variable = i;
-        } else {
-          break;
-        }
-      }
-      string = reverseString(string); // Переворачиваем строку
-      end = calculateString(string) / 100;
-      start = calculateString(output.substring(0, variable) + '' + end);
-      $summary.html(start);
-      $total.html($summary.html());
-    } else {
-      full = calculateString(output) / 100;
-      $summary.html(full);
-      $total.html($summary.html());
-    }
+    calculateString(output/100);
     decimal = false;
   } else if (keyValue == '=') {
     if (output.indexOf('^') > -1) { // Возведение в степень

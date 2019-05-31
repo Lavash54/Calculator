@@ -15,6 +15,7 @@ class CreateForm(object):
 class Calculate(object):
     @cherrypy.tools.accept(media='text/plain')
     def GET(self, **data):
+        if str(data['str']) != 'NaN':
             return str(eval(data['str']))
 
 
