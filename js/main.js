@@ -5,9 +5,12 @@ var decimal = false;
 var operators = ['+', '-', '*', '/'];
 var numbers = '1234567890';
 var calc = ['cos', 'sin', 'tan', 'log', 'sqrt', 'pow'];
-var countBracket = 0;
-var numberFirstPow = 0;
-var numberSecondPow = 0;
+var countBracket = 0; // Подсчет скобок
+var numberFirstPow = '';
+var numberSecondPow = '';
+var numberFactorial = '';
+
+// Fix: "7! * 5"
 
 $keys.click(function() {
   var keyValue = $(this).data('val');
@@ -50,7 +53,6 @@ $keys.click(function() {
         }
       }
       string = reverseString(string); // Переворачиваем строку
-      console.log(string);
       end = calculateString(string) / 100;
       start = calculateString(output.substring(0, variable) + '' + end);
       $summary.html(start);
@@ -62,26 +64,43 @@ $keys.click(function() {
     }
     decimal = false;
   } else if (keyValue == '=') {
-    for (var i = 0; i < output.length; i++) { // Получение степени числа
-      if (output.indexOf('^') > -1 && operators.indexOf(output[i]) <= -1) {
-        numberSecondPow += output[i];
-        if (output[i] == '^') {
+    if (output.indexOf('^') > -1) { // Возведение в степень
+      for (var i = output.length - 1; i > 0; i--) { // Получение степени числа
+        if (operators.indexOf(output[i]) <= -1) { // Если символ не является оператором
+          if (output[i] == '^') {
+            break;
+          }
+          numberSecondPow += output[i];
+        } else {
           numberSecondPow = '';
         }
-      } else {
-        break;
+      }
+      numberSecondPow = reverseString(numberSecondPow); // Переворачиваем строку
+    }
+    if (output.indexOf('!') > -1) { // Если в строке есть знак факториала
+      numberFactorial = '';
+      var l = 0;
+      for (var i = output.length - 1; i >= 0; i--) {
+        if (l >= 1) {
+          if (operators.indexOf(output[i]) > -1) {
+            l--;
+            break;
+          } else {
+            numberFactorial += output[i];
+          }
+        }
+        if (output[i] == '!') {
+          l++;
+        }
       }
     }
-    if (lastChar == '!') { // Факториал
-      end = factorial(output.substring(0, output.length - 1));
-    } else if (calc.indexOf(trig) > -1 || calc.indexOf(sqrt) > -1 ||
-      calc.indexOf(pow) > -1) { // Квадрат, корень, тригонометрия
-      output = outputTrig(output);
-      end = calculateString(output);
-    } else { // Числа
-      end = calculateString($summary.html());
-    }
+
+    output = outputTrig(output); // Квадрат, корень, тригонометрия, факториал
+    end = calculateString(output);
     $total.html(end);
+
+    numberSecondPow = '';
+    numberFirstPow = '';
 
     if (end != 0) {
       $summary.html(end);
@@ -93,6 +112,8 @@ $keys.click(function() {
   } else if ($(this).is('.operator')) { // Операторы
     if (lastChar == '.') {
       $summary.html($summary.html());
+    } else if (lastChar == '(' && keyValue == '-') {
+      $summary.html($summary.html() + keyValue);
     } else if (lastChar == '(') {
       $summary.html($summary.html());
     } else if (output != '' && operators.indexOf(lastChar) == -1) {
@@ -105,7 +126,9 @@ $keys.click(function() {
     }
     decimal = false;
   } else if (keyValue == 'factorial') {
-    if (lastChar == '!') {
+    if (lastChar == '.') {
+      $summary.html($summary.html());
+    } else if (lastChar == '!') {
       alert('Данный калькулятор не может вычислять двойной и более факториал');
       return -1;
     } else if (output != '') {
@@ -117,13 +140,14 @@ $keys.click(function() {
       $summary.html($summary.html() + keyValue);
     }
   } else if (keyValue == ')') {
-    if (operators.indexOf(lastChar) > -1) {
-    } else if (countBracket > 0) {
+    if (operators.indexOf(lastChar) > -1) {} else if (lastChar == '(') {} else if (countBracket > 0) {
       $summary.html($summary.html() + keyValue);
       countBracket--;
     }
   } else if (keyValue == '(') {
-    if (numbers.indexOf(lastChar) == -1) {
+    if (lastChar == '.') {
+      $summary.html($summary.html());
+    } else if (numbers.indexOf(lastChar) == -1) {
       $summary.html($summary.html() + keyValue);
     } else {
       $summary.html($summary.html() + '*' + keyValue);
@@ -132,7 +156,9 @@ $keys.click(function() {
   } else if (keyValue == '.') {
     if (output == '') { // Если ничего, ставим ноль перед точкой
       $summary.html('0' + keyValue);
+      decimal = true;
     } else if (operators.indexOf(lastChar) > -1) { // Если последний символ Оператор, ставим ноль перед точкой
+      decimal = true;
       $summary.html($summary.html() + '0' + keyValue);
     } else if (lastChar == '.' || lastChar == '(' || lastChar == ')') {
 
@@ -143,7 +169,9 @@ $keys.click(function() {
       }
     }
   } else if (keyValue == 'e' || keyValue == 'π') {
-    if (lastChar == 'e' || lastChar == 'π') {
+    if (lastChar == '.') {
+      $summary.html($summary.html());
+    } else if (lastChar == 'e' || lastChar == 'π' || lastChar == '!') {
       $summary.html($summary.html() + '*' + keyValue);
     } else if (numbers.indexOf(lastChar) == -1) {
       $summary.html($summary.html() + keyValue);
@@ -153,7 +181,9 @@ $keys.click(function() {
 
   } else if (keyValue == 'cos(' || keyValue == 'sin(' ||
     keyValue == 'log(' || keyValue == 'tan(' || keyValue == 'sqrt(') {
-    if (lastChar == ')' || numbers.indexOf(lastChar) > -1) { // Если перед ними стоит закрывающая стобка или цифра - ставить знак умножения
+    if (lastChar == '.') {
+      $summary.html($summary.html());
+    } else if (lastChar == ')' || lastChar == '!' || numbers.indexOf(lastChar) > -1) { // Если перед ними стоит закрывающая стобка или цифра - ставить знак умножения
       $summary.html($summary.html() + '*' + keyValue);
     } else {
       $summary.html($summary.html() + keyValue);
@@ -176,7 +206,7 @@ $keys.click(function() {
       $summary.html($summary.html() + keyValue);
     }
   } else {
-    if (lastChar == ')') {
+    if (lastChar == ')' || lastChar == '!') {
       $summary.html($summary.html() + '*' + keyValue);
     } else if (lastChar == '0') {
       if (output[output.length - 2] == '(') {
@@ -211,6 +241,7 @@ function calculateString(str) {
 function outputTrig(output) {
   output = output
     .replace(numberFirstPow + '^' + numberSecondPow, 'Math.pow(' + numberFirstPow + ',' + numberSecondPow + ')')
+    .replace(numberFactorial + '!', 'factorial(' + numberFactorial + ')')
     .replace(/sqrt/g, 'Math.sqrt')
     .replace(/cos/g, 'Math.cos')
     .replace(/sin/g, 'Math.sin')
@@ -223,7 +254,6 @@ function outputTrig(output) {
 }
 
 $(window).keydown(function(e) {
-  console.log(e.which);
   switch (e.which) {
     case 8:
       key = 'delete';
@@ -317,9 +347,6 @@ $(window).keydown(function(e) {
       break;
     case 107:
       key = '+';
-      break;
-    case 13:
-      key = '=';
       break;
     case 110:
       key = '.';
