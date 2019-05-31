@@ -234,21 +234,30 @@ function reverseString(str) {
   return newString;
 }
 
-function calculateString(str) {
-  return (new Function('return ' + str))();
-}
 
+function calculateString(str) {
+  $.ajax({
+    type: "GET",
+    url: "/g",
+    data: {'str': str}
+  })
+    .done(function(result) {
+     $total.html(result);
+     return result;
+    });
+
+}
 function outputTrig(output) {
   output = output
-    .replace(numberFirstPow + '^' + numberSecondPow, 'Math.pow(' + numberFirstPow + ',' + numberSecondPow + ')')
+    .replace(numberFirstPow + '^' + numberSecondPow, numberFirstPow + '**' + numberSecondPow)
     .replace(numberFactorial + '!', 'factorial(' + numberFactorial + ')')
-    .replace(/sqrt/g, 'Math.sqrt')
-    .replace(/cos/g, 'Math.cos')
-    .replace(/sin/g, 'Math.sin')
-    .replace(/log/g, 'Math.log')
-    .replace(/tan/g, 'Math.tan')
-    .replace(/π/g, 'Math.PI')
-    .replace(/e/g, 'Math.E');
+    .replace(/sqrt/g, 'sqrt')
+    .replace(/cos/g, 'cos')
+    .replace(/sin/g, 'sin')
+    .replace(/log/g, 'log')
+    .replace(/tan/g, 'tan')
+    .replace(/π/g, '3.1415')
+    .replace(/e/g, '2.71828');
 
   return output;
 }
@@ -355,16 +364,16 @@ $(window).keydown(function(e) {
       key = 'clear';
       break;
     case 67:
-      key = 'cos(';
+      key = 'cos';
       break;
     case 83:
-      key = 'sin(';
+      key = 'sin';
       break;
     case 84:
-      key = 'tan(';
+      key = 'tan';
       break;
     case 76:
-      key = 'log(';
+      key = 'log';
       break;
     default:
       return false;

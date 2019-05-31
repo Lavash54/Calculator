@@ -1,9 +1,7 @@
 import cherrypy
-import tg as tg
-from cherrypy.lib import static
 import os, os
 
-from math import log, sin, cos, sqrt, tan, factorial, log1p
+from math import log, sin, cos, sqrt, tan, log1p, factorial
 
 
 @cherrypy.expose
@@ -16,34 +14,8 @@ class CreateForm(object):
 @cherrypy.expose
 class Calculate(object):
     @cherrypy.tools.accept(media='text/plain')
-    def GET(self, a, b, ch):
-        if ch == '+':
-            return str(a + b)
-        if ch == '-':
-            return str(a - b)
-        if ch == '*':
-            return str(a * b)
-        if ch == '/':
-            return str(a / b)
-        if ch == '^':
-            return str(a ** b)
-        if ch == '%':
-            return str(a % b)
-        if ch == 'log':
-            return str(log(a, b))
-        if ch == 'sin':
-            return str(sin(a))
-        if ch == 'cos':
-            return str(cos(a))
-        if ch == 'sqrt':
-            return str(sqrt(a))
-        if ch == 'tan':
-            return str(tan(a))
-        if ch == 'ln':
-            return str(log1p(a))
-        if ch == '!':
-            return str(factorial(a))
-        return "Wrong Command"
+    def GET(self, **data):
+            return str(eval(data['str']))
 
 
 conf = {
