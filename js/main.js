@@ -10,7 +10,6 @@ var numberFirstPow = '';
 var numberSecondPow = '';
 var numberFactorial = '';
 
-// Fix: "7! * 5"
 
 $keys.click(function() {
   var keyValue = $(this).data('val');

@@ -4,6 +4,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="copyright" content="by ofswg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/2.1.0/mocha.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/2.1.0/mocha.js"></script>
+  <script>
+    mocha.setup('bdd');
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/2.0.0/chai.js"></script>
+  <script>
+    var assert = chai.assert;
+  </script>
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
@@ -59,6 +68,42 @@
     </section>
   </div>
   <script src="js/main.js" charset="utf-8"></script>
+
+  <script>
+    function division(x, y) {
+      return (new Function('return ' + x + '/' + y))();
+    }
+
+    function sqrt1(x) {
+      return (new Function('return Math.sqrt(' + x + ')'))();
+    }
+
+    function multiplication(x, y) {
+      return (new Function('return ' + x + '*' + y))();
+    }
+
+    function subtraction(x, y) {
+      return (new Function('return ' + x + '-' + y))();
+    }
+
+    function factorials(x) {
+      return x ? x * factorials(x - 1) : 1;
+    }
+
+    function sum(x, y) {
+      return (new Function('return ' + x + '+' + y))();
+    }
+
+    function pow(x, y) {
+      return (new Function('return Math.pow(' + x + ',' + y + ')'))();
+    }
+  </script>
+
+  <script src="tests/test.js"></script>
+  <div id="mocha"></div>
+  <script>
+    mocha.run();
+  </script>
 </body>
 
 </html>
