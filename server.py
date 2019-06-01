@@ -1,8 +1,9 @@
 import cherrypy
 import os, os
-
 from math import log, sin, cos, sqrt, tan, log1p, factorial
 
+class server():
+    data = {}
 
 @cherrypy.expose
 class CreateForm(object):
@@ -15,6 +16,7 @@ class CreateForm(object):
 class Calculate(object):
     @cherrypy.tools.accept(media='text/plain')
     def GET(self, **data):
+        server.data = data
         if str(data['str']) != 'NaN':
             return str(eval(data['str']))
 
@@ -33,11 +35,14 @@ conf = {
 }
 
 cherrypy.config.update({'server.socket_host': '127.0.0.1',
-                        'server.socket_port': 8080,
+                        'server.socket_port': 443,
                         'tools.sessions.on': True,
                         'engine.autoreload.on': False,
                         'log.access_file': './access.log',
                         'log.error_file': './error.log',
+                        'server.ssl_module': 'builtin',
+                        'server.ssl_certificate': 'cert.pem',
+                        'server.ssl_private_key': 'privkey.pem'
                         })
 
 cherrypy.tree.mount(CreateForm(), '/', conf)
